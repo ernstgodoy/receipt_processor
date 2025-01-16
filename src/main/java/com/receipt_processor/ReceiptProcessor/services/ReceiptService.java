@@ -11,7 +11,7 @@ import com.receipt_processor.ReceiptProcessor.models.Receipt;
 
 @Service
 public class ReceiptService {
-    Map<String, Receipt> receipts = new HashMap<>();
+    private static Map<String, Receipt> receipts = new HashMap<>();
 
     @Autowired
     PointsService pointsService;

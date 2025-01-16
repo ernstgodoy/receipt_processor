@@ -4,7 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.receipt_processor.ReceiptProcessor.validations.ValidLocalDate;
+import com.receipt_processor.ReceiptProcessor.validations.ValidLocalTime;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -25,11 +26,12 @@ public class Receipt {
     String retailer;
 
     @NotNull
-    LocalDate purchaseDate;
+    @ValidLocalDate
+    String purchaseDate;
 
     @NotNull
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
-    LocalTime purchaseTime;
+    @ValidLocalTime
+    String purchaseTime;
 
     @NotNull
     @Pattern(regexp = "^\\d+\\.\\d{2}$")
@@ -42,5 +44,13 @@ public class Receipt {
 
     public Double getTotalAsDouble() {
         return Double.parseDouble(total);
+    }
+
+    public LocalDate getPurchaseDateAsLocalDate() {
+        return LocalDate.parse(purchaseDate);
+    }
+
+    public LocalTime getPurchaseTimeAsLocaLTime() {
+        return LocalTime.parse(purchaseTime);
     }
 }

@@ -29,8 +29,8 @@ public class ReceiptTest {
         PurchaseItem item = new PurchaseItem("Description", "10.00");
         Receipt receipt = new Receipt();
         receipt.setRetailer("Retailer");
-        receipt.setPurchaseDate(LocalDate.of(2025, 01, 01));
-        receipt.setPurchaseTime(LocalTime.of(11, 30, 0));
+        receipt.setPurchaseDate(LocalDate.of(2025, 01, 01).toString());
+        receipt.setPurchaseTime(LocalTime.of(11, 30, 0).toString());
         receipt.setItems(List.of(item));
         receipt.setTotal("10.00");
 
@@ -44,8 +44,8 @@ public class ReceiptTest {
         PurchaseItem item = new PurchaseItem("Description", "10.00");
         Receipt receipt = new Receipt();
         receipt.setRetailer("Retailer###");
-        receipt.setPurchaseDate(LocalDate.of(2025, 01, 01));
-        receipt.setPurchaseTime(LocalTime.of(11, 30, 0));
+        receipt.setPurchaseDate(LocalDate.of(2025, 01, 01).toString());
+        receipt.setPurchaseTime(LocalTime.of(11, 30, 0).toString());
         receipt.setItems(List.of(item));
         receipt.setTotal("10.00");
 
@@ -57,27 +57,27 @@ public class ReceiptTest {
     }
 
     @Test
-    void testInvalid_PurchaseDate() {
+    void testInvalid_NullPurchaseDate() {
         PurchaseItem item = new PurchaseItem("Description", "10.00");
         Receipt receipt = new Receipt();
         receipt.setRetailer("Retailer");
-        receipt.setPurchaseTime(LocalTime.of(11, 30, 0));
+        receipt.setPurchaseTime(LocalTime.of(11, 30, 0).toString());
         receipt.setItems(List.of(item));
         receipt.setTotal("10.00");
 
         Set<ConstraintViolation<Receipt>> violations = validator.validate(receipt);
 
         assertFalse(violations.isEmpty());
-        assertEquals(1, violations.size());
-        assertEquals("must not be null", violations.iterator().next().getMessage());
+        assertEquals(2, violations.size());
     }
 
     @Test
-    void testInvalid_PurchaseTime() {
+    void testInvalid_BadPurchaseDate() {
         PurchaseItem item = new PurchaseItem("Description", "10.00");
         Receipt receipt = new Receipt();
         receipt.setRetailer("Retailer");
-        receipt.setPurchaseDate(LocalDate.of(2025, 01, 01));
+        receipt.setPurchaseDate(LocalDate.now().plusYears(3).toString());
+        receipt.setPurchaseTime(LocalTime.of(11, 30, 0).toString());
         receipt.setItems(List.of(item));
         receipt.setTotal("10.00");
 
@@ -85,7 +85,39 @@ public class ReceiptTest {
 
         assertFalse(violations.isEmpty());
         assertEquals(1, violations.size());
-        assertEquals("must not be null", violations.iterator().next().getMessage());
+        assertEquals("Invalid date.", violations.iterator().next().getMessage());
+    }
+
+    @Test
+    void testInvalid_NullPurchaseTime() {
+        PurchaseItem item = new PurchaseItem("Description", "10.00");
+        Receipt receipt = new Receipt();
+        receipt.setRetailer("Retailer");
+        receipt.setPurchaseDate(LocalDate.of(2025, 01, 01).toString());
+        receipt.setItems(List.of(item));
+        receipt.setTotal("10.00");
+
+        Set<ConstraintViolation<Receipt>> violations = validator.validate(receipt);
+
+        assertFalse(violations.isEmpty());
+        assertEquals(2, violations.size());
+    }
+
+    @Test
+    void testInvalid_BadPurchaseTime() {
+        PurchaseItem item = new PurchaseItem("Description", "10.00");
+        Receipt receipt = new Receipt();
+        receipt.setRetailer("Retailer");
+        receipt.setPurchaseDate(LocalDate.of(2025, 01, 01).toString());
+        receipt.setPurchaseTime("30:20");
+        receipt.setItems(List.of(item));
+        receipt.setTotal("10.00");
+
+        Set<ConstraintViolation<Receipt>> violations = validator.validate(receipt);
+
+        assertFalse(violations.isEmpty());
+        assertEquals(1, violations.size());
+        assertEquals("Invalid time.", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -93,8 +125,8 @@ public class ReceiptTest {
         PurchaseItem item = new PurchaseItem("Description", "10.000");
         Receipt receipt = new Receipt();
         receipt.setRetailer("Retailer");
-        receipt.setPurchaseDate(LocalDate.of(2025, 01, 01));
-        receipt.setPurchaseTime(LocalTime.of(11, 30, 0));
+        receipt.setPurchaseDate(LocalDate.of(2025, 01, 01).toString());
+        receipt.setPurchaseTime(LocalTime.of(11, 30, 0).toString());
         receipt.setItems(List.of(item));
         receipt.setTotal("10.00");
 
@@ -110,8 +142,8 @@ public class ReceiptTest {
         PurchaseItem item = new PurchaseItem("Description", "10.00");
         Receipt receipt = new Receipt();
         receipt.setRetailer("Retailer");
-        receipt.setPurchaseDate(LocalDate.of(2025, 01, 01));
-        receipt.setPurchaseTime(LocalTime.of(11, 30, 0));
+        receipt.setPurchaseDate(LocalDate.of(2025, 01, 01).toString());
+        receipt.setPurchaseTime(LocalTime.of(11, 30, 0).toString());
         receipt.setItems(List.of(item));
         receipt.setTotal("10.000");
 
