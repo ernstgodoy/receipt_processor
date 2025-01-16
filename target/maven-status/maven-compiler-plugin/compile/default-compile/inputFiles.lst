@@ -1,0 +1,6 @@
+/Users/ernesto/Code/Personal/receipt_processor/src/main/java/com/receipt_processor/ReceiptProcessor/ReceiptProcessorApplication.java
+/Users/ernesto/Code/Personal/receipt_processor/src/main/java/com/receipt_processor/ReceiptProcessor/controllers/ReceiptsController.java
+/Users/ernesto/Code/Personal/receipt_processor/src/main/java/com/receipt_processor/ReceiptProcessor/models/PurchaseItem.java
+/Users/ernesto/Code/Personal/receipt_processor/src/main/java/com/receipt_processor/ReceiptProcessor/models/Receipt.java
+/Users/ernesto/Code/Personal/receipt_processor/src/main/java/com/receipt_processor/ReceiptProcessor/services/PointsService.java
+/Users/ernesto/Code/Personal/receipt_processor/src/main/java/com/receipt_processor/ReceiptProcessor/services/ReceiptService.java
