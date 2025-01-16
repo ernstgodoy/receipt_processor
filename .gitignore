@@ -1,0 +1,20 @@
+# Maven build output
+/target/
+
+# VScode
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+
+# Eclipse
+*.iml
+*.project
+*.classpath
+
+*.log
+*.class
+*.jar
+*.war
+*.swp
+.DS_Store

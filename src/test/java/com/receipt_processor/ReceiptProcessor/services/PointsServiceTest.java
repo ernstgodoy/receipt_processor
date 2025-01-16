@@ -27,11 +27,11 @@ public class PointsServiceTest {
     @Test
     void testGetPoints() {
         PurchaseItem item1 = new PurchaseItem();
-        item1.setPrice(10.00);
+        item1.setPrice("10.00");
         item1.setShortDescription("Short Description 1");
         
         PurchaseItem item2 = new PurchaseItem();
-        item2.setPrice(5.25);
+        item2.setPrice("5.25");
         item2.setShortDescription("Short Description2");
 
         Receipt receipt1 = new Receipt();
@@ -40,20 +40,20 @@ public class PointsServiceTest {
         receipt1.setPurchaseTime(LocalTime.of(14, 30, 0)); // between 2-4pm: 10 pts
         receipt1.setRetailer("Retailer 1"); // 9 alphanumeric: 9 pts
         receipt1.setItems(List.of(item1)); // no pairs, no multiples of 3: 0pts
-        UUID uuid1 = UUID.randomUUID(); 
+        String id1 = UUID.randomUUID().toString(); 
         int expectedPoints1 = 100;
 
         Receipt receipt2 = new Receipt();
-        receipt2.setTotal(item1.getPrice() + item2.getPrice()); // not round dollar amnt, multiple of .25: 25 pts
+        receipt2.setTotal(Double.toString(item1.getPriceAsDouble() + item2.getPriceAsDouble())); // not round dollar amnt, multiple of .25: 25 pts
         receipt2.setPurchaseDate(LocalDate.of(2025, 01, 14)); // even date: 0 pts
         receipt2.setPurchaseTime(LocalTime.of(12, 30, 0)); // not between 2-4pm: 0 pts
         receipt2.setRetailer("Retailer 02"); // 10 alphanumeric: 10 pts
         receipt2.setItems(List.of(item1, item2)); // one pairs, one multiples of 3: 7pts
-        UUID uuid2 = UUID.randomUUID(); 
+        String id2 = UUID.randomUUID().toString(); 
         int expectedPoints2 = 42;
 
-        Integer points1 = pointsService.getPoints(uuid1, receipt1);
-        Integer points2 = pointsService.getPoints(uuid2, receipt2);
+        Integer points1 = pointsService.getPoints(id1, receipt1);
+        Integer points2 = pointsService.getPoints(id2, receipt2);
 
         assertEquals(expectedPoints1, points1);
         assertEquals(expectedPoints2, points2);

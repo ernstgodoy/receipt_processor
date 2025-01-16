@@ -1,6 +1,0 @@
-com/receipt_processor/ReceiptProcessor/ReceiptProcessorApplication.class
-com/receipt_processor/ReceiptProcessor/services/ReceiptService.class
-com/receipt_processor/ReceiptProcessor/models/PurchaseItem.class
-com/receipt_processor/ReceiptProcessor/models/Receipt.class
-com/receipt_processor/ReceiptProcessor/controllers/ReceiptsController.class
-com/receipt_processor/ReceiptProcessor/services/PointsService.class
