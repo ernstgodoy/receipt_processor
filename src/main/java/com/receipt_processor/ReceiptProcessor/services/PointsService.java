@@ -4,7 +4,6 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -17,11 +16,17 @@ public class PointsService {
     Map<UUID, Integer> pointsByReceiptId = new HashMap<>();
 
     int getPoints(UUID uuid, Receipt receipt) {
-        return Optional.ofNullable(pointsByReceiptId.get(uuid))
-            .orElseGet(() -> calculatePoints(receipt));
+        Integer points = pointsByReceiptId.get(uuid);
+
+        if (points == null) {
+            points = calculatePoints(uuid, receipt);
+            pointsByReceiptId.put(uuid, points);
+        }
+
+        return points;
     }
 
-    private int calculatePoints(Receipt receipt){
+    private int calculatePoints(UUID uuid,Receipt receipt){
         int points = 0;
 
         // One point for every alphanumeric character in the retailer name.
