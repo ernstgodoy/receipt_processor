@@ -7,7 +7,7 @@
 
 ## steps to run with docker
 1. clone repository
-2. run `mvn clean package`
+2. cd into the repository `cd receipt_processor`
 3. run `docker build -t receipt-processor .`
 4. run `docker run -p 8080:8080 receipt-processor`
 
