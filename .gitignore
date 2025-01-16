@@ -1,6 +1,9 @@
 # Maven build output
 /target/
 
+# VScode
+.vscode/
+
 # IntelliJ IDEA
 .idea/
 
