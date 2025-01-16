@@ -36,8 +36,8 @@ public class PointsServiceTest {
 
         Receipt receipt1 = new Receipt();
         receipt1.setTotal(item1.getPrice()); // round dollar amnt, multiple of .25: 75 pts
-        receipt1.setPurchaseDate(LocalDate.of(2025, 01, 15)); // odd date: 6 pts
-        receipt1.setPurchaseTime(LocalTime.of(14, 30, 0)); // between 2-4pm: 10 pts
+        receipt1.setPurchaseDate(LocalDate.of(2025, 01, 15).toString()); // odd date: 6 pts
+        receipt1.setPurchaseTime(LocalTime.of(14, 30, 0).toString()); // between 2-4pm: 10 pts
         receipt1.setRetailer("Retailer 1"); // 9 alphanumeric: 9 pts
         receipt1.setItems(List.of(item1)); // no pairs, no multiples of 3: 0pts
         String id1 = UUID.randomUUID().toString(); 
@@ -45,8 +45,8 @@ public class PointsServiceTest {
 
         Receipt receipt2 = new Receipt();
         receipt2.setTotal(Double.toString(item1.getPriceAsDouble() + item2.getPriceAsDouble())); // not round dollar amnt, multiple of .25: 25 pts
-        receipt2.setPurchaseDate(LocalDate.of(2025, 01, 14)); // even date: 0 pts
-        receipt2.setPurchaseTime(LocalTime.of(12, 30, 0)); // not between 2-4pm: 0 pts
+        receipt2.setPurchaseDate(LocalDate.of(2025, 01, 14).toString()); // even date: 0 pts
+        receipt2.setPurchaseTime(LocalTime.of(12, 30, 0).toString()); // not between 2-4pm: 0 pts
         receipt2.setRetailer("Retailer 02"); // 10 alphanumeric: 10 pts
         receipt2.setItems(List.of(item1, item2)); // one pairs, one multiples of 3: 7pts
         String id2 = UUID.randomUUID().toString(); 

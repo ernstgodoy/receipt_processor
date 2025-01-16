@@ -12,7 +12,7 @@ import com.receipt_processor.ReceiptProcessor.models.Receipt;
 
 @Service
 public class PointsService {
-    Map<String, Integer> pointsByReceiptId = new HashMap<>();
+    private static Map<String, Integer> pointsByReceiptId = new HashMap<>();
 
     int getPoints(String id, Receipt receipt) {
         Integer points = pointsByReceiptId.get(id);
@@ -50,12 +50,12 @@ public class PointsService {
         points += calculateItemDescriptionPoints(receipt.getItems());
 
         // 6 points if the day in the purchase date is odd.
-        if (receipt.getPurchaseDate().getDayOfMonth() % 2 != 0) {
+        if (receipt.getPurchaseDateAsLocalDate().getDayOfMonth() % 2 != 0) {
             points += 6;
         }
 
         // 10 points if the time of purchase is after 2:00pm and before 4:00pm.
-        if (isTimeBetween2And4PM(receipt.getPurchaseTime())) {
+        if (isTimeBetween2And4PM(LocalTime.parse(receipt.getPurchaseTime()))) {
             points += 10;
         }
 
