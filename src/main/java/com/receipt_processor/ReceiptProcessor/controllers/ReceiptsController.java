@@ -6,13 +6,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.receipt_processor.ReceiptProcessor.models.Receipt;
 import com.receipt_processor.ReceiptProcessor.services.ReceiptService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Map;
-import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -27,24 +30,35 @@ public class ReceiptsController {
     }
 
     @PostMapping("/process")
-    public ResponseEntity<Map<String, UUID>> processReceipts(@RequestBody Receipt receipt) {
-        Map<String, UUID> response = Map.of("id", receiptProcesserService.processReceipt(receipt));
+    public ResponseEntity<Object> processReceipts(@RequestBody @Valid Receipt receipt, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The receipt is invalid.");
+        }
+
+        Map<String, String> response = Map.of("id", receiptProcesserService.processReceipt(receipt));
         return ResponseEntity.ok(response);
     }
     
-    @GetMapping("/{uuid}")
-    public Receipt getReceipt(@PathVariable UUID uuid) {
-        return receiptProcesserService.getReceiptById(uuid);
+    @GetMapping("/{id}")
+    public Receipt getReceipt(@PathVariable String id) {
+        return receiptProcesserService.getReceiptById(id);
     }
 
     @GetMapping("/all")
-    public Map<UUID, Receipt> getAllReceipts() {
+    public Map<String, Receipt> getAllReceipts() {
         return receiptProcesserService.getAllReceipts();
     }
 
-    @GetMapping("/{uuid}/points")
-    public ResponseEntity<Map<String, Integer>> getReceiptPoints(@PathVariable UUID uuid) {
-        Map<String,Integer> response = Map.of("points", receiptProcesserService.getPointsForReceiptById(uuid));
+    @GetMapping("/{id}/points")
+    public ResponseEntity<Object> getReceiptPoints(@PathVariable String id) {
+        Integer points = receiptProcesserService.getPointsForReceiptById(id);
+
+        if (points == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No receipt found for that ID.");
+        }
+
+        Map<String,Integer> response = Map.of("points", points);
         return ResponseEntity.ok(response);
     }
 }

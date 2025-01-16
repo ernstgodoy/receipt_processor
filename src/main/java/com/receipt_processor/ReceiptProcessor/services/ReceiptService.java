@@ -11,32 +11,32 @@ import com.receipt_processor.ReceiptProcessor.models.Receipt;
 
 @Service
 public class ReceiptService {
-    Map<UUID, Receipt> receipts = new HashMap<>();
+    Map<String, Receipt> receipts = new HashMap<>();
 
     @Autowired
     PointsService pointsService;
 
-    public UUID processReceipt(Receipt receipt) {
-        UUID uuid = UUID.randomUUID();
-        receipts.put(uuid, receipt);
-        return uuid;
+    public String processReceipt(Receipt receipt) {
+        String id = UUID.randomUUID().toString();
+        receipts.put(id, receipt);
+        return id;
     }
 
-    public Integer getPointsForReceiptById(UUID uuid) {
-        Receipt receipt = receipts.get(uuid);
+    public Integer getPointsForReceiptById(String id) {
+        Receipt receipt = receipts.get(id);
 
         if (receipt == null) {
             return null;
         }
 
-        return pointsService.getPoints(uuid, receipt);
+        return pointsService.getPoints(id, receipt);
     }
 
-    public Map<UUID, Receipt> getAllReceipts() {
+    public Map<String, Receipt> getAllReceipts() {
         return receipts;
     }
 
-    public Receipt getReceiptById(UUID uuid) {
-        return receipts.get(uuid);
+    public Receipt getReceiptById(String id) {
+        return receipts.get(id);
     }
 }

@@ -35,55 +35,55 @@ public class ReceiptServiceTest {
 
     @Test 
     void testProcessReceipt() {
-        UUID uuid = receiptService.processReceipt(mockReceipt);
+        String id = receiptService.processReceipt(mockReceipt);
 
-        assertNotNull(uuid);
-        assertNotNull(receiptService.getReceiptById(uuid));
+        assertNotNull(id);
+        assertNotNull(receiptService.getReceiptById(id));
     }
 
     @Test
     void testGetPoints() {
         int mockPoints = 100;
-        UUID uuid = receiptService.processReceipt(mockReceipt);
+        String id = receiptService.processReceipt(mockReceipt);
 
-        when(pointsService.getPoints(uuid, mockReceipt)).thenReturn(mockPoints);
+        when(pointsService.getPoints(id, mockReceipt)).thenReturn(mockPoints);
 
-        int points = receiptService.getPointsForReceiptById(uuid);
+        int points = receiptService.getPointsForReceiptById(id);
         
         assertEquals(points, mockPoints);
-        verify(pointsService, times(1)).getPoints(uuid, mockReceipt);
+        verify(pointsService, times(1)).getPoints(id, mockReceipt);
     }
 
     @Test
     void testGetPionts_ReceiptDoesntExist() {
-        UUID uuid = UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
 
-        assertNull(receiptService.getPointsForReceiptById(uuid));
+        assertNull(receiptService.getPointsForReceiptById(id));
     }
 
     @Test
     void testGetReceiptById() {
-        UUID uuid = receiptService.processReceipt(mockReceipt);
+        String id = receiptService.processReceipt(mockReceipt);
 
-        assertNotNull(receiptService.getReceiptById(uuid));
+        assertNotNull(receiptService.getReceiptById(id));
     }
 
     @Test
     void testGetReceiptById_ReceiptDoesntExist() {
-        UUID uuid = UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
 
-        assertNull(receiptService.getReceiptById(uuid));
+        assertNull(receiptService.getReceiptById(id));
     }
 
     @Test
     void testGetAllReceipts() {
-        UUID uuid1 = receiptService.processReceipt(mockReceipt);
-        UUID uuid2 = receiptService.processReceipt(mockReceipt);
+        String id1 = receiptService.processReceipt(mockReceipt);
+        String id2 = receiptService.processReceipt(mockReceipt);
 
-        Map<UUID, Receipt> receipts = receiptService.getAllReceipts();
+        Map<String, Receipt> receipts = receiptService.getAllReceipts();
 
         assertEquals(2, receipts.size());
-        assertNotNull(receipts.get(uuid1));
-        assertNotNull(receipts.get(uuid2));
+        assertNotNull(receipts.get(id1));
+        assertNotNull(receipts.get(id2));
     }
 }

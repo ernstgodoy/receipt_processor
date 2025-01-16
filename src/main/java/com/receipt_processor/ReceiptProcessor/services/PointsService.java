@@ -4,7 +4,6 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -13,32 +12,32 @@ import com.receipt_processor.ReceiptProcessor.models.Receipt;
 
 @Service
 public class PointsService {
-    Map<UUID, Integer> pointsByReceiptId = new HashMap<>();
+    Map<String, Integer> pointsByReceiptId = new HashMap<>();
 
-    int getPoints(UUID uuid, Receipt receipt) {
-        Integer points = pointsByReceiptId.get(uuid);
+    int getPoints(String id, Receipt receipt) {
+        Integer points = pointsByReceiptId.get(id);
 
         if (points == null) {
-            points = calculatePoints(uuid, receipt);
-            pointsByReceiptId.put(uuid, points);
+            points = calculatePoints(id, receipt);
+            pointsByReceiptId.put(id, points);
         }
 
         return points;
     }
 
-    private int calculatePoints(UUID uuid,Receipt receipt){
+    private int calculatePoints(String id,Receipt receipt){
         int points = 0;
 
         // One point for every alphanumeric character in the retailer name.
         points += calculateAlphanumericPoints(receipt.getRetailer());
 
         // 50 points if the total is a round dollar amount with no cents.
-        if (isRoundDollar(receipt.getTotal())) {
+        if (isRoundDollar(receipt.getTotalAsDouble())) {
             points += 50;
         }
 
         // 25 points if the total is a multiple of 0.25.
-        if (isMultipleOfQuarter(receipt.getTotal())) {
+        if (isMultipleOfQuarter(receipt.getTotalAsDouble())) {
             points += 25;
         }
 
@@ -85,7 +84,7 @@ public class PointsService {
         for (PurchaseItem item : items) {
             int descriptionLength = item.getShortDescription().trim().length();
             if (descriptionLength % 3 == 0) {
-                points += Math.ceil(item.getPrice() * 0.2);
+                points += Math.ceil(item.getPriceAsDouble() * 0.2);
             }
         }
         return points;
